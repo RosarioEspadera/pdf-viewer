@@ -71,9 +71,13 @@ body.sepia { background: #f4ecd8; color: #5b4636; }
 
 #drawCanvas {
   position: absolute;
-  top: 0;
-  left: 0;
   pointer-events: none;
+  flex: 1;
+  margin: auto;
+  display: block;
+  max-width: 100%;
+  background: #fff;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 #dropZone {
   position: fixed;
