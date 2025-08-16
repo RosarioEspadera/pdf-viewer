@@ -17,13 +17,11 @@
 </div>
 
     <div id="toolbar">
-   <select id="themePreset">
-  <option value="dark">🌙 Dark Mode</option>
-  <option value="addNote">📝 Add Note</option>
-  <option value="export">📤 Export Notes</option>
-  <option value="highlight">🖍️ Highlight</option>
+     <select id="themePreset">
+  <option value="light">Light</option>
+  <option value="dark">Dark</option>
+  <option value="sepia">Sepia</option>
 </select>
-
    
 <select id="zoomPreset">
   <option value="0.5">50%</option>
@@ -31,21 +29,26 @@
   <option value="1.5">150%</option>
   <option value="2">200%</option>
 </select>
-<input type="color" id="bgColorPicker">
-  <input type="color" id="textColorPicker">
       <button id="prevPage">⬅️</button>
       <span id="pageInfo">Page <span id="pageNum">1</span> / <span id="pageCount">?</span></span>
       <button id="nextPage">➡️</button>
       <input type="range" id="zoomSlider" min="0.5" max="2" step="0.1" value="1" />
+      <button id="toggleDark">🌙</button>
       <button id="bookmarkPage">🔖</button>
       <input type="number" id="jumpInput" min="1" placeholder="Go to page" />
       <button id="jumpBtn">⏩</button>
       <button id="rotatePage">🔄 Rotate</button>
+      <button id="addNote">📝 Add Note</button>
+      <div id="notesPanel"></div>
+      <button id="highlightText">🖍️ Highlight</button>
       <button id="drawRect">⬛ Draw Rect</button>
       <button id="eraserTool">🧽 Erase</button>
+      <button id="exportAnnotations">📤 Export Notes</button>
       <button aria-label="Next page of PDF">➡️ Next</button>
       <input aria-label="Search notes" type="text">
-    
+      <input type="color" id="bgColorPicker">
+      <input type="color" id="textColorPicker">
+
 
       <select id="fontSizeToggle">
   <option value="16">Normal</option>
