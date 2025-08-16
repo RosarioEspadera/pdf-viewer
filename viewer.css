@@ -65,3 +65,21 @@ body.dark #bookmarksPanel {
 .hidden {
   display: none;
 }
+body.light { background: #fdf6e3; color: #333; }
+body.dark { background: #1e1e1e; color: #eee; }
+body.sepia { background: #f4ecd8; color: #5b4636; }
+
+#drawCanvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+#dropZone {
+  position: fixed;
+  bottom: 10px;
+  left: 10px;
+  background: #eee;
+  padding: 10px;
+  border: 2px dashed #aaa;
+}
