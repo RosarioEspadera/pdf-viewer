@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cozy PDF Viewer</title>
+  <link rel="stylesheet" href="viewer.css" />
+</head>
+<body>
+  <header>
+    <h1>📖 Cozy PDF Viewer</h1>
+    <div id="toolbar">
+      <button id="prevPage">⬅️</button>
+      <span id="pageInfo">Page <span id="pageNum">1</span> / <span id="pageCount">?</span></span>
+      <button id="nextPage">➡️</button>
+      <input type="range" id="zoomSlider" min="0.5" max="2" step="0.1" value="1" />
+    </div>
+  </header>
+  <main>
+    <canvas id="pdfCanvas"></canvas>
+  </main>
+  <script src="libs/pdf.js"></script>
+  <script src="viewer.js"></script>
+</body>
+</html>
