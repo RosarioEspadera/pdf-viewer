@@ -84,10 +84,9 @@
 
   </main>
   <script type="module" src="libs/pdf.js"></script>
-  <script>
-  pdfjsLib.GlobalWorkerOptions.workerSrc = "libs/pdf.worker.js";
-</script>>
 <script>
+  
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'libs/pdf.worker.js';
 
   const url = 'assets/sample-1.pdf';  
 document.addEventListener("DOMContentLoaded", () => {

@@ -1,8 +1,4 @@
 
-pdfjsLib.GlobalWorkerOptions.workerSrc = 'libs/pdf.worker.js';
-
-
-
 let pdfDoc = null,
     pageNum = 1,
     scale = 1,
