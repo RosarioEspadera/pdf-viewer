@@ -1,4 +1,4 @@
-const url = 'assets/sample.pdf';
+const url = 'assets/sample-1.pdf';
 let pdfDoc = null,
     pageNum = 1,
     scale = 1,
