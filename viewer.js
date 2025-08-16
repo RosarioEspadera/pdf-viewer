@@ -1,5 +1,6 @@
 
-pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'libs/pdf.worker.js';
+
 
 const url = 'assets/sample-1.pdf';
 let pdfDoc = null,
@@ -8,7 +9,6 @@ let pdfDoc = null,
     canvas = document.getElementById('pdfCanvas'),
     ctx = canvas.getContext('2d');
 
-pdfjsLib.GlobalWorkerOptions.workerSrc = 'libs/pdf.worker.js';
 
 pdfjsLib.getDocument(url).promise.then(doc => {
   pdfDoc = doc;
@@ -56,7 +56,11 @@ document.getElementById('zoomPreset').onchange = (e) => {
   scale = parseFloat(e.target.value);
   renderPage(pageNum);
 };
-document.getElementById('fitWidth').onclick = () => {
+document.addEventListener("DOMContentLoaded", () => {
+  const button = document.getElementById("load-pdf");
+  if (button) {
+    button.onclick = () => {
+      loadPDF();
   pdfDoc.getPage(pageNum).then(page => {
     const viewport = page.getViewport({ scale: 1 });
     const containerWidth = canvas.parentElement.offsetWidth;
@@ -64,6 +68,10 @@ document.getElementById('fitWidth').onclick = () => {
     renderPage(pageNum);
   });
 };
+  } else {
+    console.warn("Button not found");
+  }
+});
 
 let rotation = 0;
 document.getElementById('rotatePage').onclick = () => {
