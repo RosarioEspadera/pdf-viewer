@@ -1,3 +1,5 @@
+pdfjsLib.GlobalWorkerOptions.workerSrc = './pdf.worker.mjs';
+
 const canvas = document.getElementById("pdf-canvas");
 const ctx = canvas.getContext("2d");
 
