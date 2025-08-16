@@ -31,14 +31,27 @@
       <input type="number" id="jumpInput" min="1" placeholder="Go to page" />
       <button id="jumpBtn">⏩</button>
       <button id="rotatePage">🔄 Rotate</button>
-      <canvas id="drawCanvas"></canvas>
+      <button id="addNote">📝 Add Note</button>
+      <div id="notesPanel"></div>
     </div>
   </header>
  
   <main>
+    <button id="toggleSettings">⚙️</button>
+<div id="settingsPanel" class="hidden">
+  <label><input type="checkbox" id="enableDark"> Dark Mode</label>
+  <label><input type="checkbox" id="enableBookmarks"> Bookmarks</label>
+</div>
+
+    <div id="floatingPageNum"></div>
+    <canvas id="drawCanvas"></canvas>
      <div id="dropZone">Drop PDF here</div>
     <canvas id="pdfCanvas"></canvas>
+    <canvas id="pdfCanvas2"></canvas>
     <div id="bookmarksPanel" class="hidden"></div>
+    <button id="readPage">🔊 Read Page</button>
+    <div id="pageOverlay"></div>
+
   </main>
   <script src="libs/pdf.mjs"></script>
   <script src="viewer.js"></script>
