@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-import { WorkerMessageHandler } from "./core/worker.js";
+
 
 globalThis.pdfjsWorker = {
   WorkerMessageHandler,

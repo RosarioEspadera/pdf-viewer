@@ -1,15 +1,15 @@
+const loadingTask = pdfjsLib.getDocument("sample-1.pdf");
+loadingTask.promise.then(pdf => {
+  const canvas = document.getElementById("pdf-canvas");
+  const ctx = canvas.getContext("2d");
 
-let pdfDoc = null,
-    pageNum = 1,
-    scale = 1,
-    canvas = document.getElementById('pdfCanvas'),
-    ctx = canvas.getContext('2d');
+  pdf.getPage(1).then(page => {
+    const viewport = page.getViewport({ scale: 1.5 });
+    canvas.height = viewport.height;
+    canvas.width = viewport.width;
 
-
-pdfjsLib.getDocument(url).promise.then(doc => {
-  pdfDoc = doc;
-  document.getElementById('pageCount').textContent = doc.numPages;
-  renderPage(pageNum);
+    page.render({ canvasContext: ctx, viewport });
+  });
 });
 
 function renderPage(num) {
