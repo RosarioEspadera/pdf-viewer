@@ -26,7 +26,7 @@ function renderPage(num) {
     document.getElementById('pageNum').textContent = num;
   });
 }
-document.addEventListener('DOMContentLoaded', () => {
+
 document.getElementById('prevPage').onclick = () => {
   if (pageNum <= 1) return;
   pageNum--;
@@ -507,5 +507,4 @@ document.getElementById('pdfUpload').addEventListener('change', async (e) => {
   } else {
     alert('Please upload a valid PDF file.');
   }
-});
 });
