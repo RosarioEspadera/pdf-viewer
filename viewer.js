@@ -257,3 +257,125 @@ window.addEventListener('load', () => {
   }
 });
 
+document.getElementById('highlightText').onclick = () => {
+  const selection = window.getSelection().toString();
+  if (selection) {
+    const highlight = document.createElement('mark');
+    highlight.textContent = selection;
+    const range = window.getSelection().getRangeAt(0);
+    range.deleteContents();
+    range.insertNode(highlight);
+  }
+};
+let drawingRect = false;
+canvas.addEventListener('mousedown', e => {
+  if (!drawingRect) return;
+  const rect = document.createElement('div');
+  rect.style.position = 'absolute';
+  rect.style.border = '2px solid red';
+  rect.style.left = `${e.clientX}px`;
+  rect.style.top = `${e.clientY}px`;
+  rect.style.width = '100px';
+  rect.style.height = '50px';
+  document.body.appendChild(rect);
+});
+
+document.getElementById('drawRect').onclick = () => {
+  drawingRect = !drawingRect;
+};
+
+document.getElementById('eraserTool').onclick = () => {
+  drawCanvas.addEventListener('click', e => {
+    drawCtx.clearRect(e.offsetX - 10, e.offsetY - 10, 20, 20);
+  }, { once: true });
+};
+
+let drawHistory = [], drawFuture = [];
+
+function saveDrawState() {
+  drawHistory.push(drawCanvas.toDataURL());
+  if (drawHistory.length > 20) drawHistory.shift();
+}
+
+document.getElementById('drawCanvas').addEventListener('mouseup', saveDrawState);
+
+document.addEventListener('keydown', e => {
+  if (e.ctrlKey && e.key === 'z' && drawHistory.length) {
+    drawFuture.push(drawCanvas.toDataURL());
+    const img = new Image();
+    img.onload = () => drawCtx.drawImage(img, 0, 0);
+    img.src = drawHistory.pop();
+  }
+  if (e.ctrlKey && e.key === 'y' && drawFuture.length) {
+    drawHistory.push(drawCanvas.toDataURL());
+    const img = new Image();
+    img.onload = () => drawCtx.drawImage(img, 0, 0);
+    img.src = drawFuture.pop();
+  }
+});
+
+pdfDoc.getPage(pageNum).then(page => {
+  page.getAnnotations().then(annots => {
+    annots.forEach(a => {
+      if (a.fieldType === 'Tx') {
+        const input = document.createElement('input');
+        input.style.position = 'absolute';
+        input.style.left = `${a.rect[0]}px`;
+        input.style.top = `${a.rect[1]}px`;
+        input.style.width = `${a.rect[2] - a.rect[0]}px`;
+        input.style.height = `${a.rect[3] - a.rect[1]}px`;
+        document.body.appendChild(input);
+      }
+    });
+  });
+});
+const sigPad = document.getElementById('signaturePad');
+const sigCtx = sigPad.getContext('2d');
+let signing = false;
+
+sigPad.addEventListener('mousedown', () => signing = true);
+sigPad.addEventListener('mouseup', () => signing = false);
+sigPad.addEventListener('mousemove', e => {
+  if (!signing) return;
+  sigCtx.fillStyle = 'black';
+  sigCtx.beginPath();
+  sigCtx.arc(e.offsetX, e.offsetY, 1, 0, Math.PI * 2);
+  sigCtx.fill();
+});
+
+document.getElementById('saveSignature').onclick = () => {
+  const dataURL = sigPad.toDataURL();
+  localStorage.setItem('userSignature', dataURL);
+};
+
+document.getElementById('themePreset').onchange = (e) => {
+  document.body.className = e.target.value;
+};
+
+function vibrateFeedback() {
+  if (navigator.vibrate) navigator.vibrate(50);
+}
+
+document.getElementById('nextPage').onclick = () => {
+  vibrateFeedback();
+  pageNum++;
+  renderPage(pageNum);
+};
+
+document.getElementById('exportAnnotations').onclick = () => {
+  const notes = localStorage.getItem('pdfNotes');
+  const blob = new Blob([notes], { type: 'application/json' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = 'annotations.json';
+  link.click();
+};
+
+document.getElementById('toggleDraw').onchange = (e) => {
+  drawCanvas.style.display = e.target.checked ? 'block' : 'none';
+};
+
+document.getElementById('toggleNotes').onchange = (e) => {
+  document.getElementById('notesPanel').style.display = e.target.checked ? 'block' : 'none';
+};
+

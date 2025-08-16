@@ -6,7 +6,10 @@ body {
   display: flex;
   flex-direction: column;
   height: 100vh;
-  transition: background 0.3s, color 0.3s;
+}
+
+body {
+  transition: background 0.5s ease, color 0.5s ease;
 }
 
 body.dark {
@@ -70,7 +73,6 @@ body.dark { background: #1e1e1e; color: #eee; }
 body.sepia { background: #f4ecd8; color: #5b4636; }
 
 #drawCanvas {
-  position: absolute;
   pointer-events: none;
   flex: 1;
   margin: auto;

@@ -9,6 +9,11 @@
 <body>
   <header>
     <h1>📖 Cozy PDF Viewer</h1>
+    <div id="pluginTogglePanel">
+  <label><input type="checkbox" id="toggleDraw"> Drawing</label>
+  <label><input type="checkbox" id="toggleNotes"> Notes</label>
+</div>
+
     <div id="toolbar">
      <select id="themePreset">
   <option value="light">Light</option>
@@ -33,6 +38,11 @@
       <button id="rotatePage">🔄 Rotate</button>
       <button id="addNote">📝 Add Note</button>
       <div id="notesPanel"></div>
+      <button id="highlightText">🖍️ Highlight</button>
+      <button id="drawRect">⬛ Draw Rect</button>
+      <button id="eraserTool">🧽 Erase</button>
+      <button id="exportAnnotations">📤 Export Notes</button>
+
     </div>
   </header>
  
@@ -52,6 +62,8 @@
     <div id="bookmarksPanel" class="hidden"></div>
     <button id="readPage">🔊 Read Page</button>
     <div id="pageOverlay"></div>
+<canvas id="signaturePad" width="300" height="100"></canvas>
+<button id="saveSignature">💾 Save Signature</button>
 
   </main>
   <script src="libs/pdf.mjs"></script>
