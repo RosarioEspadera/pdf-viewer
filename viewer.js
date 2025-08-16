@@ -1,23 +1,31 @@
-pdfjsLib.GlobalWorkerOptions.workerSrc = './pdf.worker.mjs';
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'libs/pdf.worker.min.js';
 
 const canvas = document.getElementById("pdf-canvas");
 const ctx = canvas.getContext("2d");
 
 let pdfDoc = null;
+let pageNum = 1;
+let scale = 1.5;
 
-pdfjsLib.getDocument("assets/sample.pdf").promise.then(doc => {
-  pdfDoc = doc;
-  return doc.getPage(1);
-}).then(page => {
-  const viewport = page.getViewport({ scale: 1.5 });
-  canvas.height = viewport.height;
-  canvas.width = viewport.width;
-  page.render({ canvasContext: ctx, viewport });
-}).catch(err => {
-  console.error("PDF loading error:", err);
-});
+// Set worker source from CDN
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
+// Load PDF
+pdfjsLib.getDocument("assets/sample.pdf").promise
+  .then(doc => {
+    pdfDoc = doc;
+    renderPage(pageNum);
+  })
+  .catch(err => {
+    console.error("📄 PDF loading error:", err.message);
+    canvas.classList.add("error");
+    canvas.title = "Failed to load PDF.";
+  });
+
+// Render a specific page
 function renderPage(num) {
+  if (!pdfDoc) return;
+
   pdfDoc.getPage(num).then(page => {
     const viewport = page.getViewport({ scale });
     canvas.height = viewport.height;
@@ -25,20 +33,26 @@ function renderPage(num) {
 
     page.render({ canvasContext: ctx, viewport });
     document.getElementById('pageNum').textContent = num;
+  }).catch(err => {
+    console.error(`⚠️ Failed to render page ${num}:`, err.message);
   });
 }
 
+// Navigation
 document.getElementById('prevPage').onclick = () => {
-  if (pageNum <= 1) return;
-  pageNum--;
-  renderPage(pageNum);
+  if (pageNum > 1) {
+    pageNum--;
+    renderPage(pageNum);
+  }
 };
 
 document.getElementById('nextPage').onclick = () => {
-  if (pageNum >= pdfDoc.numPages) return;
-  pageNum++;
-  renderPage(pageNum);
+  if (pdfDoc && pageNum < pdfDoc.numPages) {
+    pageNum++;
+    renderPage(pageNum);
+  }
 };
+
 
 document.getElementById('zoomSlider').oninput = (e) => {
   scale = parseFloat(e.target.value);
