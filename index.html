@@ -84,11 +84,10 @@
 
   </main>
   <script type="module" src="libs/pdf.mjs"></script>
-  <script src="libs/pdf.min.js"></script>
+  <script src="libs/pdf.js"></script>
 <script>
   pdfjsLib.GlobalWorkerOptions.workerSrc = 'libs/pdf.worker.js';
 
-  const url = 'assets/sample.pdf';
   const canvas = document.getElementById('pdf-canvas');
   const ctx = canvas.getContext('2d');
 
