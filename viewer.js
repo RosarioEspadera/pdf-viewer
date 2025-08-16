@@ -492,4 +492,18 @@ function updateStreak() {
   }
 }
 
+document.getElementById('pdfUpload').addEventListener('change', async (e) => {
+  const file = e.target.files[0];
+  if (file && file.type === 'application/pdf') {
+    const arrayBuffer = await file.arrayBuffer();
+    pdfjsLib.getDocument({ data: arrayBuffer }).promise.then(doc => {
+      pdfDoc = doc;
+      pageNum = 1;
+      document.getElementById('pageCount').textContent = doc.numPages;
+      renderPage(pageNum);
+    });
+  } else {
+    alert('Please upload a valid PDF file.');
+  }
+});
 
