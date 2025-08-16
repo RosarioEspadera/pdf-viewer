@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Cozy PDF Viewer</title>
   <link rel="stylesheet" href="viewer.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
 </head>
 <body>
   <header>
@@ -16,9 +18,13 @@
 
     <div id="toolbar">
      <select id="themePreset">
-  <option value="light">Light</option>
-  <option value="dark">Dark</option>
-  <option value="sepia">Sepia</option>
+  <button id="toggleDark">🌙</button>
+  <button id="addNote">📝 Add Note</button>
+  <div id="notesPanel"></div>
+  <input type="color" id="bgColorPicker">
+  <input type="color" id="textColorPicker">
+  <button id="exportAnnotations">📤 Export Notes</button>
+  <button id="highlightText">🖍️ Highlight</button>
 </select>
    
 <select id="zoomPreset">
@@ -31,17 +37,21 @@
       <span id="pageInfo">Page <span id="pageNum">1</span> / <span id="pageCount">?</span></span>
       <button id="nextPage">➡️</button>
       <input type="range" id="zoomSlider" min="0.5" max="2" step="0.1" value="1" />
-      <button id="toggleDark">🌙</button>
       <button id="bookmarkPage">🔖</button>
       <input type="number" id="jumpInput" min="1" placeholder="Go to page" />
       <button id="jumpBtn">⏩</button>
       <button id="rotatePage">🔄 Rotate</button>
-      <button id="addNote">📝 Add Note</button>
-      <div id="notesPanel"></div>
-      <button id="highlightText">🖍️ Highlight</button>
       <button id="drawRect">⬛ Draw Rect</button>
       <button id="eraserTool">🧽 Erase</button>
-      <button id="exportAnnotations">📤 Export Notes</button>
+      <button aria-label="Next page of PDF">➡️ Next</button>
+      <input aria-label="Search notes" type="text">
+    
+      <select id="fontSizeToggle">
+  <option value="16">Normal</option>
+  <option value="20">Large</option>
+  <option value="24">Extra Large</option>
+</select>
+
 
     </div>
   </header>
@@ -64,6 +74,8 @@
     <div id="pageOverlay"></div>
 <canvas id="signaturePad" width="300" height="100"></canvas>
 <button id="saveSignature">💾 Save Signature</button>
+<progress id="flashProgressBar" value="0" max="100"></progress>
+
 
   </main>
   <script src="libs/pdf.mjs"></script>

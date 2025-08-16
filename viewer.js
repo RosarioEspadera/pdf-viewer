@@ -1,3 +1,4 @@
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 const url = 'assets/sample-1.pdf';
 let pdfDoc = null,
     pageNum = 1,
@@ -378,4 +379,117 @@ document.getElementById('toggleDraw').onchange = (e) => {
 document.getElementById('toggleNotes').onchange = (e) => {
   document.getElementById('notesPanel').style.display = e.target.checked ? 'block' : 'none';
 };
+function splitPDF(pdfDoc, startPage, endPage) {
+  const newPDF = new PDFLib.PDFDocument();
+  for (let i = startPage; i <= endPage; i++) {
+    newPDF.addPage(pdfDoc.getPage(i));
+  }
+  return newPDF.save();
+}
+async function mergePDFs(pdfArray) {
+  const merged = await PDFLib.PDFDocument.create();
+  for (const pdfBytes of pdfArray) {
+    const pdf = await PDFLib.PDFDocument.load(pdfBytes);
+    const pages = await merged.copyPages(pdf, pdf.getPageIndices());
+    pages.forEach(p => merged.addPage(p));
+  }
+  return await merged.save();
+}
+const CACHE_NAME = 'pdf-cache-v1';
+
+self.addEventListener('fetch', event => {
+  if (event.request.url.endsWith('.pdf')) {
+    event.respondWith(
+      caches.open(CACHE_NAME).then(cache =>
+        cache.match(event.request).then(response =>
+          response || fetch(event.request).then(res => {
+            cache.put(event.request, res.clone());
+            return res;
+          })
+        )
+      )
+    );
+  }
+});
+window.addEventListener('offline', () => {
+  document.body.innerHTML = '<h2>You’re offline 🌙</h2><p>Try navigating with cached content.</p>';
+});
+document.getElementById('fontSizeToggle').onchange = e => {
+  document.body.style.fontSize = `${e.target.value}px`;
+};
+
+// Add role hints dynamically
+document.querySelectorAll('button').forEach(btn => {
+  btn.setAttribute('role', 'button');
+});
+
+const hour = new Date().getHours();
+if (hour >= 18 || hour < 6) {
+  document.body.classList.add('dark-theme');
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight') nextPage();
+  if (e.key === 'ArrowLeft') prevPage();
+});
+function saveNote(id, text) {
+  const notes = JSON.parse(localStorage.getItem('pdfNotes') || '{}');
+  notes[id] = text;
+  localStorage.setItem('pdfNotes', JSON.stringify(notes));
+}
+
+function loadNote(id) {
+  const notes = JSON.parse(localStorage.getItem('pdfNotes') || '{}');
+  return notes[id] || '';
+}
+document.querySelectorAll('.noteInput').forEach(input => {
+  input.addEventListener('input', () => {
+    saveNote(input.dataset.noteId, input.value);
+  });
+});
+document.getElementById('bgColorPicker').onchange = e => {
+  document.body.style.backgroundColor = e.target.value;
+  localStorage.setItem('userBgColor', e.target.value);
+};
+
+document.getElementById('textColorPicker').onchange = e => {
+  document.body.style.color = e.target.value;
+  localStorage.setItem('userTextColor', e.target.value);
+};
+window.addEventListener('load', () => {
+  const bg = localStorage.getItem('userBgColor');
+  const text = localStorage.getItem('userTextColor');
+  if (bg) document.body.style.backgroundColor = bg;
+  if (text) document.body.style.color = text;
+});
+function markFlashcardDone(id) {
+  const progress = JSON.parse(localStorage.getItem('flashProgress') || '{}');
+  progress[id] = true;
+  localStorage.setItem('flashProgress', JSON.stringify(progress));
+}
+function updateProgressBar() {
+  const progress = JSON.parse(localStorage.getItem('flashProgress') || '{}');
+  const done = Object.values(progress).filter(v => v).length;
+  const total = flashcardList.length;
+  document.getElementById('flashProgressBar').value = (done / total) * 100;
+}
+function checkAchievements() {
+  const progress = JSON.parse(localStorage.getItem('flashProgress') || '{}');
+  const done = Object.values(progress).filter(v => v).length;
+  if (done === flashcardList.length) {
+    showToast('🏅 Achievement: All Flashcards Mastered!');
+  }
+}
+function updateStreak() {
+  const today = new Date().toDateString();
+  const last = localStorage.getItem('lastStudyDate');
+  let streak = parseInt(localStorage.getItem('studyStreak') || '0');
+
+  if (last !== today) {
+    streak = (new Date(today) - new Date(last) === 86400000) ? streak + 1 : 1;
+    localStorage.setItem('studyStreak', streak);
+    localStorage.setItem('lastStudyDate', today);
+  }
+}
+
 
