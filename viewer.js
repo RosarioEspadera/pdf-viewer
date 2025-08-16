@@ -74,9 +74,14 @@ document.getElementById('rotatePage').onclick = () => {
   });
 };
 
-document.getElementById('themePreset').onchange = (e) => {
-  document.body.className = e.target.value;
-};
+document.getElementById('themePreset').addEventListener('change', function (e) {
+  const value = e.target.value;
+  if (value === 'dark') toggleDarkMode();
+  else if (value === 'addNote') addNote();
+  else if (value === 'export') exportAnnotations();
+  else if (value === 'highlight') highlightText();
+});
+
 window.addEventListener('beforeunload', () => {
   localStorage.setItem('lastPage', pageNum);
 });

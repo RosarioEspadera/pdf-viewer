@@ -17,15 +17,13 @@
 </div>
 
     <div id="toolbar">
-     <select id="themePreset">
-  <button id="toggleDark">🌙</button>
-  <button id="addNote">📝 Add Note</button>
-  <div id="notesPanel"></div>
-  <input type="color" id="bgColorPicker">
-  <input type="color" id="textColorPicker">
-  <button id="exportAnnotations">📤 Export Notes</button>
-  <button id="highlightText">🖍️ Highlight</button>
+   <select id="themePreset">
+  <option value="dark">🌙 Dark Mode</option>
+  <option value="addNote">📝 Add Note</option>
+  <option value="export">📤 Export Notes</option>
+  <option value="highlight">🖍️ Highlight</option>
 </select>
+
    
 <select id="zoomPreset">
   <option value="0.5">50%</option>
@@ -33,6 +31,8 @@
   <option value="1.5">150%</option>
   <option value="2">200%</option>
 </select>
+<input type="color" id="bgColorPicker">
+  <input type="color" id="textColorPicker">
       <button id="prevPage">⬅️</button>
       <span id="pageInfo">Page <span id="pageNum">1</span> / <span id="pageCount">?</span></span>
       <button id="nextPage">➡️</button>
@@ -46,6 +46,7 @@
       <button aria-label="Next page of PDF">➡️ Next</button>
       <input aria-label="Search notes" type="text">
     
+
       <select id="fontSizeToggle">
   <option value="16">Normal</option>
   <option value="20">Large</option>
