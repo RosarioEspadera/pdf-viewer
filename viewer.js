@@ -2,6 +2,14 @@
 pdfjsLib.GlobalWorkerOptions.workerSrc = 'libs/pdf.worker.js';
 
 
+
+let pdfDoc = null,
+    pageNum = 1,
+    scale = 1,
+    canvas = document.getElementById('pdfCanvas'),
+    ctx = canvas.getContext('2d');
+
+
 pdfjsLib.getDocument(url).promise.then(doc => {
   pdfDoc = doc;
   document.getElementById('pageCount').textContent = doc.numPages;
