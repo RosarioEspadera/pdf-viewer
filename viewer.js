@@ -1,15 +1,18 @@
-const loadingTask = pdfjsLib.getDocument("sample-1.pdf");
-loadingTask.promise.then(pdf => {
-  const canvas = document.getElementById("pdf-canvas");
-  const ctx = canvas.getContext("2d");
+const canvas = document.getElementById("pdf-canvas");
+const ctx = canvas.getContext("2d");
 
-  pdf.getPage(1).then(page => {
-    const viewport = page.getViewport({ scale: 1.5 });
-    canvas.height = viewport.height;
-    canvas.width = viewport.width;
+let pdfDoc = null;
 
-    page.render({ canvasContext: ctx, viewport });
-  });
+pdfjsLib.getDocument("assets/sample.pdf").promise.then(doc => {
+  pdfDoc = doc;
+  return doc.getPage(1);
+}).then(page => {
+  const viewport = page.getViewport({ scale: 1.5 });
+  canvas.height = viewport.height;
+  canvas.width = viewport.width;
+  page.render({ canvasContext: ctx, viewport });
+}).catch(err => {
+  console.error("PDF loading error:", err);
 });
 
 function renderPage(num) {
