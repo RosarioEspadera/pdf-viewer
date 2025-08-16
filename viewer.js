@@ -1,6 +1,6 @@
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-document.addEventListener('DOMContentLoaded', () => {
+
 const url = 'assets/sample-1.pdf';
 let pdfDoc = null,
     pageNum = 1,
@@ -8,7 +8,7 @@ let pdfDoc = null,
     canvas = document.getElementById('pdfCanvas'),
     ctx = canvas.getContext('2d');
 
-pdfjsLib.GlobalWorkerOptions.workerSrc = 'libs/pdf.worker.mjs';
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'libs/pdf.worker.js';
 
 pdfjsLib.getDocument(url).promise.then(doc => {
   pdfDoc = doc;
@@ -26,7 +26,7 @@ function renderPage(num) {
     document.getElementById('pageNum').textContent = num;
   });
 }
-
+document.addEventListener('DOMContentLoaded', () => {
 document.getElementById('prevPage').onclick = () => {
   if (pageNum <= 1) return;
   pageNum--;
