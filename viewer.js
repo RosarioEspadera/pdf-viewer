@@ -1,4 +1,6 @@
+
 pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+document.addEventListener('DOMContentLoaded', () => {
 const url = 'assets/sample-1.pdf';
 let pdfDoc = null,
     pageNum = 1,
@@ -6,7 +8,7 @@ let pdfDoc = null,
     canvas = document.getElementById('pdfCanvas'),
     ctx = canvas.getContext('2d');
 
-pdfjsLib.GlobalWorkerOptions.workerSrc = 'libs/pdf.worker.js';
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'libs/pdf.worker.mjs';
 
 pdfjsLib.getDocument(url).promise.then(doc => {
   pdfDoc = doc;
@@ -506,4 +508,4 @@ document.getElementById('pdfUpload').addEventListener('change', async (e) => {
     alert('Please upload a valid PDF file.');
   }
 });
-
+});
